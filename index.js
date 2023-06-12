@@ -14,9 +14,25 @@ var connection = mysql.createConnection({
     database: 'moccadb'
 });
 
+var connection = mysql.createConnection({
+    host: '34.101.223.29',
+    user: 'root',
+    password: '',
+    database: 'moccadb'
+});
+
 connection.connect(function (err) {
-    if (err) throw err
-    console.log('You are now connected with mysql database...')
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+        return;
+    }
+    console.log('Connected to MySQL database...');
+});
+
+
+app.get("/", (req, res) => {
+    console.log("Response success")
+    res.send("Response Success!")
 })
 
 app.use(bodyParser.json());       // to support JSON-encoded bodies
@@ -24,14 +40,15 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 
-var server = app.listen(4000, "127.0.0.1", function () {
+const serverPort = 4000; // Specify the desired port number
 
-    var host = server.address().address
-    var port = server.address().port
-  
-    console.log("Example app listening at http://%s:%s", host, port)
-  
-  });
+var server = app.listen(serverPort, "127.0.0.1", function () {
+    var host = server.address().address;
+    var port = server.address().port;
+
+    console.log("Example app listening at http://%s:%s", host, port);
+});
+
 
   const performOCR = async (src) => {
     const ocr = await Tesseract.recognize(src, 'eng')
